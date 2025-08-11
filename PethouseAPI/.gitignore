@@ -1,0 +1,4 @@
+bin/
+obj/
+pethouse.db-wal
+pethouse.db-shm
