@@ -43,7 +43,7 @@ namespace PethouseAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Appointment");
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("PethouseAPI.Entities.BreedSize", b =>
@@ -69,7 +69,28 @@ namespace PethouseAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BreedSize");
+                    b.ToTable("BreedSizes");
+                });
+
+            modelBuilder.Entity("PethouseAPI.Entities.PeakSeason", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateOnly>("EndDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PeakSeasons");
                 });
 
             modelBuilder.Entity("PethouseAPI.Entities.Pet", b =>
@@ -109,7 +130,7 @@ namespace PethouseAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Pet");
+                    b.ToTable("Pets");
                 });
 
             modelBuilder.Entity("PethouseAPI.Entities.PetAppointment", b =>
@@ -148,7 +169,7 @@ namespace PethouseAPI.Migrations
 
                     b.HasIndex("PetId");
 
-                    b.ToTable("PetAppointment");
+                    b.ToTable("PetAppointments");
                 });
 
             modelBuilder.Entity("PethouseAPI.Entities.User", b =>

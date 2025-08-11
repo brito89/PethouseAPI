@@ -12,7 +12,7 @@ namespace PethouseAPI.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Appointment",
+                name: "Appointments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -26,11 +26,11 @@ namespace PethouseAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Appointment", x => x.Id);
+                    table.PrimaryKey("PK_Appointments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "BreedSize",
+                name: "BreedSizes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -42,7 +42,22 @@ namespace PethouseAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BreedSize", x => x.Id);
+                    table.PrimaryKey("PK_BreedSizes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PeakSeasons",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    StartDate = table.Column<DateOnly>(type: "TEXT", nullable: false),
+                    EndDate = table.Column<DateOnly>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PeakSeasons", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,7 +82,7 @@ namespace PethouseAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Pet",
+                name: "Pets",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -82,22 +97,22 @@ namespace PethouseAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Pet", x => x.Id);
+                    table.PrimaryKey("PK_Pets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pet_BreedSize_BreedSizeId",
+                        name: "FK_Pets_BreedSizes_BreedSizeId",
                         column: x => x.BreedSizeId,
-                        principalTable: "BreedSize",
+                        principalTable: "BreedSizes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Pet_Users_UserId",
+                        name: "FK_Pets_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "PetAppointment",
+                name: "PetAppointments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -113,56 +128,59 @@ namespace PethouseAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PetAppointment", x => x.Id);
+                    table.PrimaryKey("PK_PetAppointments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PetAppointment_Appointment_AppointmentId",
+                        name: "FK_PetAppointments_Appointments_AppointmentId",
                         column: x => x.AppointmentId,
-                        principalTable: "Appointment",
+                        principalTable: "Appointments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PetAppointment_Pet_PetId",
+                        name: "FK_PetAppointments_Pets_PetId",
                         column: x => x.PetId,
-                        principalTable: "Pet",
+                        principalTable: "Pets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pet_BreedSizeId",
-                table: "Pet",
-                column: "BreedSizeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Pet_UserId",
-                table: "Pet",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PetAppointment_AppointmentId",
-                table: "PetAppointment",
+                name: "IX_PetAppointments_AppointmentId",
+                table: "PetAppointments",
                 column: "AppointmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PetAppointment_PetId",
-                table: "PetAppointment",
+                name: "IX_PetAppointments_PetId",
+                table: "PetAppointments",
                 column: "PetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pets_BreedSizeId",
+                table: "Pets",
+                column: "BreedSizeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pets_UserId",
+                table: "Pets",
+                column: "UserId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "PetAppointment");
+                name: "PeakSeasons");
 
             migrationBuilder.DropTable(
-                name: "Appointment");
+                name: "PetAppointments");
 
             migrationBuilder.DropTable(
-                name: "Pet");
+                name: "Appointments");
 
             migrationBuilder.DropTable(
-                name: "BreedSize");
+                name: "Pets");
+
+            migrationBuilder.DropTable(
+                name: "BreedSizes");
 
             migrationBuilder.DropTable(
                 name: "Users");
