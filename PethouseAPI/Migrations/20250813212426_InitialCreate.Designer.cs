@@ -11,8 +11,8 @@ using PethouseAPI.Data;
 namespace PethouseAPI.Migrations
 {
     [DbContext(typeof(PethouseDbContext))]
-    [Migration("20250811043352_InitialDB")]
-    partial class InitialDB
+    [Migration("20250813212426_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -124,7 +124,7 @@ namespace PethouseAPI.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -222,14 +222,16 @@ namespace PethouseAPI.Migrations
             modelBuilder.Entity("PethouseAPI.Entities.Pet", b =>
                 {
                     b.HasOne("PethouseAPI.Entities.BreedSize", "BreedSize")
-                        .WithMany("Pets")
+                        .WithMany()
                         .HasForeignKey("BreedSizeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PethouseAPI.Entities.User", "User")
-                        .WithMany("Pets")
-                        .HasForeignKey("UserId");
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("BreedSize");
 
@@ -239,13 +241,13 @@ namespace PethouseAPI.Migrations
             modelBuilder.Entity("PethouseAPI.Entities.PetAppointment", b =>
                 {
                     b.HasOne("PethouseAPI.Entities.Appointment", "Appointment")
-                        .WithMany("PetsAppointments")
+                        .WithMany()
                         .HasForeignKey("AppointmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PethouseAPI.Entities.Pet", "Pet")
-                        .WithMany("PetsAppointments")
+                        .WithMany()
                         .HasForeignKey("PetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -253,26 +255,6 @@ namespace PethouseAPI.Migrations
                     b.Navigation("Appointment");
 
                     b.Navigation("Pet");
-                });
-
-            modelBuilder.Entity("PethouseAPI.Entities.Appointment", b =>
-                {
-                    b.Navigation("PetsAppointments");
-                });
-
-            modelBuilder.Entity("PethouseAPI.Entities.BreedSize", b =>
-                {
-                    b.Navigation("Pets");
-                });
-
-            modelBuilder.Entity("PethouseAPI.Entities.Pet", b =>
-                {
-                    b.Navigation("PetsAppointments");
-                });
-
-            modelBuilder.Entity("PethouseAPI.Entities.User", b =>
-                {
-                    b.Navigation("Pets");
                 });
 #pragma warning restore 612, 618
         }

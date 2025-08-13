@@ -1,19 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PethouseAPI.Data;
 using PethouseAPI.Entities;
 
 namespace PethouseAPI.Services;
 
-public class BreedSizeRepository(PethouseDbContext context) : IRepository<BreedSize>
+public class PetRepository(PethouseDbContext context) : IRepository<Pet>
 {
-    public IQueryable<BreedSize> GetAll()
+    public IQueryable<Pet> GetAll()
     {
-        return context.BreedSizes.AsNoTracking();
+        return context.Pets.AsNoTracking();
     }
 
-    public async Task<BreedSize> GetByIdAsync(int id)
+    public async Task<Pet> GetByIdAsync(int id)
     {
-        var result = await context.BreedSizes.FindAsync(id);
+        var result = await context.Pets.FindAsync(id);
         
         if (result is null)
             throw new KeyNotFoundException("Id does not exist");
@@ -21,27 +21,27 @@ public class BreedSizeRepository(PethouseDbContext context) : IRepository<BreedS
         return result;
     }
 
-    public async Task AddAsync(BreedSize entity)
+    public async Task AddAsync(Pet entity)
     {
         if (entity is null)
             throw new ArgumentNullException(nameof(entity));
         
-        await context.BreedSizes.AddAsync(entity);
+        await context.Pets.AddAsync(entity);
         await context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(BreedSize entity)
+    public async Task UpdateAsync(Pet entity)
     {
         await GetByIdAsync(entity.Id);
         
-        context.BreedSizes.Update(entity);
+        context.Pets.Update(entity);
         await context.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(int id)
     {
         var result = await GetByIdAsync(id); // Will throw if not found
-        context.BreedSizes.Remove(result);
+        context.Pets.Remove(result);
         await context.SaveChangesAsync();
 
     }

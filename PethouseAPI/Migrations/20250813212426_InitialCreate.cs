@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PethouseAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDB : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -93,7 +93,7 @@ namespace PethouseAPI.Migrations
                     IsMedicated = table.Column<bool>(type: "INTEGER", nullable: false),
                     Notes = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
                     BreedSizeId = table.Column<int>(type: "INTEGER", nullable: false),
-                    UserId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    UserId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -108,7 +108,8 @@ namespace PethouseAPI.Migrations
                         name: "FK_Pets_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

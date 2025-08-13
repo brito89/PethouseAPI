@@ -19,6 +19,6 @@
 
         public  string? EmergencyContactRelationship { get; set; }
 
-        public virtual ICollection<Pet>? Pets { get; set; }
+        //public virtual ICollection<Pet>? Pets { get; set; }
     }
 }

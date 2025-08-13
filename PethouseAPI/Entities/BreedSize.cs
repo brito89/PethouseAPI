@@ -11,5 +11,5 @@ public class BreedSize
     public string? Label { get; set; }
     public decimal PricePeakSeason { get; set; }
     public decimal PriceLowSeason { get; set; }
-    public virtual ICollection<Pet>? Pets { get; set; }
+    //public virtual ICollection<Pet>? Pets { get; set; }
 }

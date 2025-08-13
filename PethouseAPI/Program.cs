@@ -36,6 +36,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IRepository<BreedSize>,BreedSizeRepository>();
+builder.Services.AddScoped<IRepository<Appointment>,AppointmentRepository>();
+builder.Services.AddScoped<IRepository<Pet>,PetRepository>();
 
 var app = builder.Build();
 

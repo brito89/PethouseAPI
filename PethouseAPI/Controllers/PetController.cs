@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PethouseAPI.Entities;
 using PethouseAPI.Services;
 
@@ -6,17 +7,20 @@ namespace PethouseAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class BreedSizeController(IRepository<BreedSize> repository,ILogger<BreedSizeController> logger) : ControllerBase
+public class PetController(IRepository<Pet> repository) : ControllerBase
 {
     [HttpGet]
-    public ActionResult<IEnumerable<BreedSize>> GetAll()
+    public ActionResult<IEnumerable<Pet>> GetAll()
     {
-        var result = repository.GetAll().ToList();
+        var result = repository.GetAll()
+            .Include(pet => pet.BreedSize)
+            .Include(pet => pet.User)
+            .ToList();
         return Ok(result);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<BreedSize>> GetById(int id)
+    public async Task<ActionResult<Pet>> GetById(int id)
     {
         try
         {
@@ -25,12 +29,12 @@ public class BreedSizeController(IRepository<BreedSize> repository,ILogger<Breed
         }
         catch (KeyNotFoundException)
         {
-            return NotFound($"BreedSize with id {id} not found.");
+            return NotFound($"Appointment with id {id} not found.");
         }
     }
 
     [HttpPost]
-    public async Task<ActionResult> Create([FromBody] BreedSize entity)
+    public async Task<ActionResult> Create([FromBody] Pet entity)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -40,7 +44,7 @@ public class BreedSizeController(IRepository<BreedSize> repository,ILogger<Breed
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> Update(int id, [FromBody] BreedSize entity)
+    public async Task<ActionResult> Update(int id, [FromBody] Pet entity)
     {
         if (id != entity.Id)
             return BadRequest("ID mismatch.");
@@ -52,7 +56,7 @@ public class BreedSizeController(IRepository<BreedSize> repository,ILogger<Breed
         }
         catch (KeyNotFoundException)
         {
-            return NotFound($"BreedSize with id {id} not found.");
+            return NotFound($"Appointment with id {id} not found.");
         }
     }
 
@@ -66,8 +70,7 @@ public class BreedSizeController(IRepository<BreedSize> repository,ILogger<Breed
         }
         catch (KeyNotFoundException)
         {
-            return NotFound($"BreedSize with id {id} not found.");
+            return NotFound($"Appointment with id {id} not found.");
         }
     }
-
 }

@@ -13,11 +13,12 @@ public class Pet
     public bool IsMedicated { get; set; }
     [MaxLength(500, ErrorMessage = "Notes cannot be longer than 500 characters.")]
     public string? Notes { get; set; }
-
-    public int BreedSizeId { get; set; }
+    
+    public required int BreedSizeId { get; set; }
     public BreedSize? BreedSize { get; set; }
-
+    
+    public  required Guid UserId { get; set; }
     public User? User { get; set; }
     
-    public virtual ICollection<PetAppointment>? PetsAppointments { get; set; }
+    //public virtual ICollection<PetAppointment>? PetsAppointments { get; set; }
 }
