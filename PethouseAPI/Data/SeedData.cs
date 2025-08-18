@@ -99,13 +99,27 @@ public static class SeedData
                 {
                     Id = 2,
                     AppointmentType = AppointmentType.Guarderia,
-                    StartDate = new DateOnly(2022, 8, 10),
-                    EndDate = new DateOnly(2022, 5, 8),
+                    StartDate = new DateOnly(2025, 8, 10),
+                    EndDate = new DateOnly(2026, 5, 8),
                     IsTosAppointmentDocumentSigned = true,
                     MedicalChecked = true,
                     CarnetCheked = true
             
                 });
+                
+                context.Set<PetAppointment>().AddRange(new PetAppointment
+                    {
+                        Id = 1,
+                        PetId = 1,
+                        AppointmentId = 2,
+                        Monday = false,
+                        Tuesday = false,
+                        Wednesday = true,
+                        Thursday = false,
+                        Friday = false,
+                        IsActive = true
+            
+                    });
                 
                 await context.SaveChangesAsync(cancellationToken);
     }
