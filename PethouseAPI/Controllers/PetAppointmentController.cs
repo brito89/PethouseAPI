@@ -1,5 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using PethouseAPI.Entities;
 using PethouseAPI.Services;
 
@@ -7,20 +6,17 @@ namespace PethouseAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PetController(IRepository<Pet> repository) : ControllerBase
+public class PetAppointmentController(IRepository<PetAppointment> repository) : ControllerBase
 {
     [HttpGet]
-    public ActionResult<IEnumerable<Pet>> GetAll()
+    public ActionResult<IEnumerable<PetAppointment>> GetAll()
     {
-        var result = repository.GetAll()
-            .Include(pet => pet.BreedSize)
-            .Include(pet => pet.User)
-            .ToList();
+        var result = repository.GetAll().ToList();
         return Ok(result);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Pet>> GetById(int id)
+    public async Task<ActionResult<PetAppointment>> GetById(int id)
     {
         try
         {
@@ -29,12 +25,12 @@ public class PetController(IRepository<Pet> repository) : ControllerBase
         }
         catch (KeyNotFoundException)
         {
-            return NotFound($"Pet with id {id} not found.");
+            return NotFound($"Pet Appointment with id {id} not found.");
         }
     }
 
     [HttpPost]
-    public async Task<ActionResult> Create([FromBody] Pet entity)
+    public async Task<ActionResult> Create([FromBody] PetAppointment entity)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -44,11 +40,11 @@ public class PetController(IRepository<Pet> repository) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> Update(int id, [FromBody] Pet entity)
+    public async Task<ActionResult> Update(int id, [FromBody] PetAppointment entity)
     {
         if (id != entity.Id)
             return BadRequest("ID mismatch.");
-
+        
         try
         {
             await repository.UpdateAsync(entity);
@@ -56,7 +52,7 @@ public class PetController(IRepository<Pet> repository) : ControllerBase
         }
         catch (KeyNotFoundException)
         {
-            return NotFound($"Pet with id {id} not found.");
+            return NotFound($"Pet Appointment with id {id} not found.");
         }
     }
 
@@ -70,7 +66,8 @@ public class PetController(IRepository<Pet> repository) : ControllerBase
         }
         catch (KeyNotFoundException)
         {
-            return NotFound($"Pet with id {id} not found.");
+            return NotFound($"Pet Appointment with id {id} not found.");
         }
     }
+    
 }

@@ -32,9 +32,12 @@ public class PetRepository(PethouseDbContext context) : IRepository<Pet>
 
     public async Task UpdateAsync(Pet entity)
     {
-        await GetByIdAsync(entity.Id);
+        var existing = await GetByIdAsync(entity.Id);
         
-        context.Pets.Update(entity);
+        if (existing is null)
+            throw new KeyNotFoundException($"PetAppointment with ID {entity.Id} not found.");
+
+        context.Entry(existing).CurrentValues.SetValues(entity);
         await context.SaveChangesAsync();
     }
 
@@ -43,6 +46,5 @@ public class PetRepository(PethouseDbContext context) : IRepository<Pet>
         var result = await GetByIdAsync(id); // Will throw if not found
         context.Pets.Remove(result);
         await context.SaveChangesAsync();
-
     }
 }

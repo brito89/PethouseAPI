@@ -4,16 +4,16 @@ using PethouseAPI.Entities;
 
 namespace PethouseAPI.Services;
 
-public class BreedSizeRepository(PethouseDbContext context) : IRepository<BreedSize>
+public class PetAppointmentRepository(PethouseDbContext  context) : IRepository<PetAppointment>
 {
-    public IQueryable<BreedSize> GetAll()
+    public IQueryable<PetAppointment> GetAll()
     {
-        return context.BreedSizes.AsNoTracking();
+        return context.PetAppointments.AsNoTracking();
     }
 
-    public async Task<BreedSize> GetByIdAsync(int id)
+    public async Task<PetAppointment> GetByIdAsync(int id)
     {
-        var result = await context.BreedSizes.FindAsync(id);
+        var result = await context.PetAppointments.FindAsync(id);
         
         if (result is null)
             throw new KeyNotFoundException("Id does not exist");
@@ -21,16 +21,16 @@ public class BreedSizeRepository(PethouseDbContext context) : IRepository<BreedS
         return result;
     }
 
-    public async Task AddAsync(BreedSize entity)
+    public async Task AddAsync(PetAppointment entity)
     {
         if (entity is null)
             throw new ArgumentNullException(nameof(entity));
         
-        await context.BreedSizes.AddAsync(entity);
+        await context.PetAppointments.AddAsync(entity);
         await context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(BreedSize entity)
+    public async Task UpdateAsync(PetAppointment entity)
     {
         var existing = await GetByIdAsync(entity.Id);
         
@@ -44,7 +44,7 @@ public class BreedSizeRepository(PethouseDbContext context) : IRepository<BreedS
     public async Task DeleteAsync(int id)
     {
         var result = await GetByIdAsync(id); // Will throw if not found
-        context.BreedSizes.Remove(result);
+        context.PetAppointments.Remove(result);
         await context.SaveChangesAsync();
 
     }

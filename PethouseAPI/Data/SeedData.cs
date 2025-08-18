@@ -14,8 +14,9 @@ public static class SeedData
                 userToAdd.Name = config["SuperUser:Name"]!;
                 userToAdd.Role = config["SuperUser:Role"]!.ToUpper();
                 userToAdd.PasswordHash = hashPassword;
-                
+                //add SuperUser
                 var admin = context.Set<User>().Add(userToAdd);
+                
                 context.Set<BreedSize>().AddRange(new BreedSize 
                 {
                     Id = 1,
@@ -53,7 +54,7 @@ public static class SeedData
                     {
                         Id = 1,
                         Name = "Pocha",
-                        DateOfBirth = new DateOnly(2022, 10, 10),
+                        DateOfBirth = new DateOnly(2022, 12, 10),
                         BreedName = "Chihuahua",
                         IsMedicated = false,
                         Notes = "None",
@@ -64,7 +65,7 @@ public static class SeedData
                     {
                         Id = 2,
                         Name = "Luna",
-                        DateOfBirth = new DateOnly(2020, 10, 10),
+                        DateOfBirth = new DateOnly(2020, 8, 10),
                         BreedName = "Border",
                         IsMedicated = false,
                         Notes = "None",
@@ -75,7 +76,7 @@ public static class SeedData
                     {
                         Id = 3,
                         Name = "Coco",
-                        DateOfBirth = new DateOnly(2018, 10, 10),
+                        DateOfBirth = new DateOnly(2018, 3, 10),
                         BreedName = "Labrador",
                         IsMedicated = false,
                         Notes = "None",
@@ -83,7 +84,7 @@ public static class SeedData
                         UserId = admin.Entity.Id
                     });
 
-                context.Set<Appointment>().Add(new Appointment
+                context.Set<Appointment>().AddRange(new Appointment
                 {
                     Id = 1,
                     AppointmentType = AppointmentType.Hospedaje,
@@ -93,7 +94,19 @@ public static class SeedData
                     MedicalChecked = true,
                     CarnetCheked = true
             
+                },
+                new Appointment
+                {
+                    Id = 2,
+                    AppointmentType = AppointmentType.Guarderia,
+                    StartDate = new DateOnly(2022, 8, 10),
+                    EndDate = new DateOnly(2022, 5, 8),
+                    IsTosAppointmentDocumentSigned = true,
+                    MedicalChecked = true,
+                    CarnetCheked = true
+            
                 });
+                
                 await context.SaveChangesAsync(cancellationToken);
     }
 }

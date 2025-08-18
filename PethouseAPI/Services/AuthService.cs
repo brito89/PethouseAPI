@@ -15,7 +15,7 @@ namespace PethouseAPI.Services
     {
         public async Task<TokenResponseDto?> LoginAsync(LoginDto request)
         {
-            var user = await context.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
+            var user = await context.Users.FirstOrDefaultAsync(u => string.Equals(u.Username,request.Username));
             if (user is null)
             {
                 return null;
@@ -33,14 +33,14 @@ namespace PethouseAPI.Services
         {
             return new TokenResponseDto
             {
-                AccessToken = CreateToken(user),
-                RefreshToken = await GenerateAndSaveRefreshTokenAsync(user)
+                AccessToken = CreateToken(user!),
+                RefreshToken = await GenerateAndSaveRefreshTokenAsync(user!)
             };
         }
 
         public async Task<User?> RegisterAsync(UserDto request)
         {
-            if (await context.Users.AnyAsync(u => u.Username == request.Username))
+            if (await context.Users.AnyAsync(u => string.Equals(u.Username, request.Username)))
             {
                 return null;
             }
@@ -49,9 +49,9 @@ namespace PethouseAPI.Services
             var hashedPassword = new PasswordHasher<User>()
                 .HashPassword(user, request.Password);
 
-            user.Username = request.Username;
+            user.Username = request.Username.ToUpper();
             user.PasswordHash = hashedPassword;
-            user.Role = request.Role;
+            user.Role = request.Role.ToUpper();
 
             context.Users.Add(user);
             await context.SaveChangesAsync();

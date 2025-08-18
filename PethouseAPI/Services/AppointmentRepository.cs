@@ -32,9 +32,12 @@ public class AppointmentRepository(PethouseDbContext context) : IRepository<Appo
 
     public async Task UpdateAsync(Appointment entity)
     {
-        await GetByIdAsync(entity.Id);
+        var existing = await GetByIdAsync(entity.Id);
         
-        context.Appointments.Update(entity);
+        if (existing is null)
+            throw new KeyNotFoundException($"PetAppointment with ID {entity.Id} not found.");
+
+        context.Entry(existing).CurrentValues.SetValues(entity);
         await context.SaveChangesAsync();
     }
 

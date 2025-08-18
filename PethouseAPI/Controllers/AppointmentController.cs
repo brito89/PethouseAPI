@@ -41,14 +41,14 @@ public class AppointmentController(IRepository<Appointment> repository) : Contro
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> Update(int id, [FromBody] Appointment appointment)
+    public async Task<ActionResult> Update(int id, [FromBody] Appointment entity)
     {
-        if (id != appointment.Id)
+        if (id != entity.Id)
             return BadRequest("ID mismatch.");
 
         try
         {
-            await repository.UpdateAsync(appointment);
+            await repository.UpdateAsync(entity);
             return NoContent();
         }
         catch (KeyNotFoundException)

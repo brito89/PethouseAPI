@@ -1,5 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using PethouseAPI.Entities;
 using PethouseAPI.Services;
 
@@ -7,20 +6,17 @@ namespace PethouseAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PetController(IRepository<Pet> repository) : ControllerBase
+public class PeakSeasonController(IRepository<PeakSeason>  repository) : ControllerBase
 {
     [HttpGet]
-    public ActionResult<IEnumerable<Pet>> GetAll()
+    public ActionResult<IEnumerable<PeakSeason>> GetAll()
     {
-        var result = repository.GetAll()
-            .Include(pet => pet.BreedSize)
-            .Include(pet => pet.User)
-            .ToList();
+        var result = repository.GetAll().ToList();
         return Ok(result);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Pet>> GetById(int id)
+    public async Task<ActionResult<PeakSeason>> GetById(int id)
     {
         try
         {
@@ -29,12 +25,12 @@ public class PetController(IRepository<Pet> repository) : ControllerBase
         }
         catch (KeyNotFoundException)
         {
-            return NotFound($"Pet with id {id} not found.");
+            return NotFound($"Peak Season with id {id} not found.");
         }
     }
 
     [HttpPost]
-    public async Task<ActionResult> Create([FromBody] Pet entity)
+    public async Task<ActionResult> Create([FromBody] PeakSeason entity)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -44,7 +40,7 @@ public class PetController(IRepository<Pet> repository) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> Update(int id, [FromBody] Pet entity)
+    public async Task<ActionResult> Update(int id, [FromBody] PeakSeason entity)
     {
         if (id != entity.Id)
             return BadRequest("ID mismatch.");
@@ -56,7 +52,7 @@ public class PetController(IRepository<Pet> repository) : ControllerBase
         }
         catch (KeyNotFoundException)
         {
-            return NotFound($"Pet with id {id} not found.");
+            return NotFound($"Peak Season with id {id} not found.");
         }
     }
 
@@ -70,7 +66,7 @@ public class PetController(IRepository<Pet> repository) : ControllerBase
         }
         catch (KeyNotFoundException)
         {
-            return NotFound($"Pet with id {id} not found.");
+            return NotFound($"Peak Season with id {id} not found.");
         }
     }
 }
