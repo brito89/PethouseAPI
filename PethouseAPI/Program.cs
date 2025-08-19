@@ -26,6 +26,17 @@ builder.Services.AddDbContext<PethouseDbContext>(options =>
                 await SeedData.Seed(context, cancellationToken, builder.Configuration);
             }
         })
+        .UseSeeding((context, _) =>
+        {
+            var userAdmin = context.Set<User>().FirstOrDefault(b =>
+                b.Role == builder.Configuration["SuperUser:Role"]!.ToUpper());
+
+            if (userAdmin is null)
+            {
+                // Blocking call to async method
+                SeedData.Seed(context, CancellationToken.None, builder.Configuration).GetAwaiter().GetResult();
+            }
+        })
 );
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -45,11 +56,24 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IRepository<BreedSize>,BreedSizeRepository>();
-builder.Services.AddScoped<IRepository<Appointment>,AppointmentRepository>();
-builder.Services.AddScoped<IRepository<Pet>,PetRepository>();
-builder.Services.AddScoped<IRepository<PeakSeason>,PeakSeasonRepository>();
+builder.Services.AddScoped<IRepository<BreedSize>, BreedSizeRepository>();
+builder.Services.AddScoped<IRepository<Appointment>, AppointmentRepository>();
+builder.Services.AddScoped<IRepository<Pet>, PetRepository>();
+builder.Services.AddScoped<IRepository<PeakSeason>, PeakSeasonRepository>();
 builder.Services.AddScoped<IRepository<PetAppointment>, PetAppointmentRepository>();
+builder.Services.AddScoped<IRepository<User>, UserRepository>();
+
+var localCors = "LocalOrigin";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: localCors,
+        policy  =>
+        {
+            policy.WithOrigins("http://localhost:4200","http://localhost:5173").AllowAnyHeader()
+                .AllowAnyMethod();;
+        });
+});
 
 var app = builder.Build();
 
@@ -67,6 +91,8 @@ await using (var dbContext = serviceScope.ServiceProvider.GetRequiredService<Pet
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(localCors);
 
 app.UseAuthorization();
 

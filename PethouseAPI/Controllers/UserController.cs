@@ -6,17 +6,17 @@ namespace PethouseAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class BreedSizeController(IRepository<BreedSize> repository) : ControllerBase
+public class UserController(IRepository<User> repository) : ControllerBase
 {
     [HttpGet]
-    public ActionResult<IEnumerable<BreedSize>> GetAll()
+    public ActionResult<IEnumerable<User>> GetAll()
     {
         var result = repository.GetAll().ToList();
         return Ok(result);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<BreedSize>> GetById(int id)
+    public async Task<ActionResult<User>> GetById(int id)
     {
         try
         {
@@ -30,7 +30,7 @@ public class BreedSizeController(IRepository<BreedSize> repository) : Controller
     }
 
     [HttpPost]
-    public async Task<ActionResult> Create([FromBody] BreedSize entity)
+    public async Task<ActionResult> Create([FromBody] User entity)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -40,7 +40,7 @@ public class BreedSizeController(IRepository<BreedSize> repository) : Controller
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> Update(int id, [FromBody] BreedSize entity)
+    public async Task<ActionResult> Update(int id, [FromBody] User entity)
     {
         if (id != entity.Id)
             return BadRequest("ID mismatch.");
@@ -69,5 +69,4 @@ public class BreedSizeController(IRepository<BreedSize> repository) : Controller
             return NotFound($"BreedSize with id {id} not found.");
         }
     }
-
 }

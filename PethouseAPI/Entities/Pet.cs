@@ -17,7 +17,7 @@ public class Pet
     public required int BreedSizeId { get; set; }
     public BreedSize? BreedSize { get; set; }
     
-    public  required Guid UserId { get; set; }
+    public  required int UserId { get; set; }
     public User? User { get; set; }
     
     //public virtual ICollection<PetAppointment>? PetsAppointments { get; set; }

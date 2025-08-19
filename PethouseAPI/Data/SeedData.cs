@@ -15,7 +15,7 @@ public static class SeedData
                 userToAdd.Role = config["SuperUser:Role"]!.ToUpper();
                 userToAdd.PasswordHash = hashPassword;
                 //add SuperUser
-                var admin = context.Set<User>().Add(userToAdd);
+                context.Set<User>().Add(userToAdd);
                 
                 context.Set<BreedSize>().AddRange(new BreedSize 
                 {
@@ -59,7 +59,7 @@ public static class SeedData
                         IsMedicated = false,
                         Notes = "None",
                         BreedSizeId = 1,
-                        UserId = admin.Entity.Id
+                        UserId = 1
                     },
                     new Pet
                     {
@@ -70,7 +70,7 @@ public static class SeedData
                         IsMedicated = false,
                         Notes = "None",
                         BreedSizeId = 2,
-                        UserId = admin.Entity.Id
+                        UserId = 1
                     },
                     new Pet
                     {
@@ -81,7 +81,7 @@ public static class SeedData
                         IsMedicated = false,
                         Notes = "None",
                         BreedSizeId = 3,
-                        UserId = admin.Entity.Id
+                        UserId = 1
                     });
 
                 context.Set<Appointment>().AddRange(new Appointment
